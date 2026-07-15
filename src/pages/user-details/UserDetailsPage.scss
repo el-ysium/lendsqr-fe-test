@@ -11,6 +11,12 @@
     margin-bottom: 24px;
   }
 
+  &__state {
+    font-size: 16px;
+    color: $color-secondary-text;
+    padding: 40px 0;
+  }
+
   &__header {
     @include flex-between;
     gap: 16px;

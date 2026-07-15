@@ -4,7 +4,7 @@ import {
   IconStar,
   IconUserPlaceholder,
 } from '../../components/icons/Icons'
-import { dummyUsers } from '../../data/users'
+import { useUser } from '../../hooks/use-user'
 import './UserDetailsPage.scss'
 
 const tabs = [
@@ -16,51 +16,67 @@ const tabs = [
   'App and System',
 ]
 
-const personalInfo = [
-  { label: 'Full Name', value: 'Grace Effiom' },
-  { label: 'Phone Number', value: '07060780922' },
-  { label: 'Email Address', value: 'grace@gmail.com' },
-  { label: 'Bvn', value: '07060780922' },
-  { label: 'Gender', value: 'Female' },
-  { label: 'Marital status', value: 'Single' },
-  { label: 'Children', value: 'None' },
-  { label: 'Type of residence', value: "Parent's Apartment" },
-]
-
-const educationInfo = [
-  { label: 'level of education', value: 'B.Sc' },
-  { label: 'employment status', value: 'Employed' },
-  { label: 'sector of employment', value: 'FinTech' },
-  { label: 'Duration of employment', value: '2 years' },
-  { label: 'office email', value: 'grace@lendsqr.com' },
-  { label: 'Monthly income', value: '₦200,000.00 - ₦400,000.00' },
-  { label: 'loan repayment', value: '40,000' },
-]
-
-const socials = [
-  { label: 'Twitter', value: '@grace_effiom' },
-  { label: 'Facebook', value: 'Grace Effiom' },
-  { label: 'Instagram', value: '@grace_effiom' },
-]
-
-const guarantors = [
-  [
-    { label: 'Full Name', value: 'Debby Ogana' },
-    { label: 'Phone Number', value: '07060780922' },
-    { label: 'Email Address', value: 'debby@gmail.com' },
-    { label: 'Relationship', value: 'Sister' },
-  ],
-  [
-    { label: 'Full Name', value: 'Debby Ogana' },
-    { label: 'Phone Number', value: '07060780922' },
-    { label: 'Email Address', value: 'debby@gmail.com' },
-    { label: 'Relationship', value: 'Sister' },
-  ],
-]
-
 export function UserDetailsPage() {
   const { id } = useParams()
-  const user = dummyUsers.find((u) => u.id === id) ?? dummyUsers[2]
+  const { user, isLoading, hasError, errorMessage } = useUser(id)
+
+  if (isLoading) {
+    return (
+      <div className="user-details">
+        <Link to="/users" className="user-details__back">
+          <IconArrowLeft />
+          <span>Back to Users</span>
+        </Link>
+        <p className="user-details__state">Loading user details…</p>
+      </div>
+    )
+  }
+
+  if (hasError || !user) {
+    return (
+      <div className="user-details">
+        <Link to="/users" className="user-details__back">
+          <IconArrowLeft />
+          <span>Back to Users</span>
+        </Link>
+        <p className="user-details__state">{errorMessage || 'User not found.'}</p>
+      </div>
+    )
+  }
+
+  const personalInfo = [
+    { label: 'Full Name', value: user.personalInfo.fullName },
+    { label: 'Phone Number', value: user.personalInfo.phoneNumber },
+    { label: 'Email Address', value: user.personalInfo.email },
+    { label: 'Bvn', value: user.personalInfo.bvn },
+    { label: 'Gender', value: user.personalInfo.gender },
+    { label: 'Marital status', value: user.personalInfo.maritalStatus },
+    { label: 'Children', value: user.personalInfo.children },
+    { label: 'Type of residence', value: user.personalInfo.residenceType },
+  ]
+
+  const educationInfo = [
+    { label: 'level of education', value: user.education.level },
+    { label: 'employment status', value: user.education.employmentStatus },
+    { label: 'sector of employment', value: user.education.sector },
+    { label: 'Duration of employment', value: user.education.duration },
+    { label: 'office email', value: user.education.officeEmail },
+    { label: 'Monthly income', value: user.education.monthlyIncome },
+    { label: 'loan repayment', value: user.education.loanRepayment },
+  ]
+
+  const socials = [
+    { label: 'Twitter', value: user.socials.twitter },
+    { label: 'Facebook', value: user.socials.facebook },
+    { label: 'Instagram', value: user.socials.instagram },
+  ]
+
+  const guarantors = user.guarantors.map((guarantor) => [
+    { label: 'Full Name', value: guarantor.fullName },
+    { label: 'Phone Number', value: guarantor.phoneNumber },
+    { label: 'Email Address', value: guarantor.email },
+    { label: 'Relationship', value: guarantor.relationship },
+  ])
 
   return (
     <div className="user-details">
@@ -87,8 +103,8 @@ export function UserDetailsPage() {
             <IconUserPlaceholder size={100} />
           </div>
           <div className="user-details__identity">
-            <h2>{user.username === 'Grace Effiom' ? 'Grace Effiom' : user.username}</h2>
-            <p>LSQFf587g90</p>
+            <h2>{user.personalInfo.fullName}</h2>
+            <p>LSQ{user.id.padStart(9, '0')}</p>
           </div>
           <div className="user-details__tier">
             <p>User&apos;s Tier</p>
@@ -154,7 +170,10 @@ function InfoSection({ title, fields, columns }: InfoSectionProps) {
         style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
       >
         {fields.map((field) => (
-          <div key={`${title ?? 'guarantor'}-${field.label}-${field.value}`} className="info-section__field">
+          <div
+            key={`${title ?? 'guarantor'}-${field.label}-${field.value}`}
+            className="info-section__field"
+          >
             <p className="info-section__label">{field.label}</p>
             <p className="info-section__value">{field.value}</p>
           </div>
