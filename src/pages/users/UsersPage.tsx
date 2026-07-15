@@ -49,22 +49,17 @@ export function UsersPage() {
 
   const organizations = useMemo(() => getUniqueOrganizations(users), [users])
 
-  const filteredUsers = useMemo(
-    () => filterUsers(users, appliedFilters),
-    [users, appliedFilters]
-  )
+  const matchedUsers = useMemo(() => {
+    const filtered = filterUsers(users, appliedFilters)
+    return searchUsers(filtered, searchQuery)
+  }, [users, appliedFilters, searchQuery])
 
-  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / PAGE_SIZE))
+  const totalPages = Math.max(1, Math.ceil(matchedUsers.length / PAGE_SIZE))
 
-  const displayedUsers = useMemo(() => {
+  const visibleUsers = useMemo(() => {
     const start = (currentPage - 1) * PAGE_SIZE
-    return filteredUsers.slice(start, start + PAGE_SIZE)
-  }, [filteredUsers, currentPage])
-
-  const visibleUsers = useMemo(
-    () => searchUsers(displayedUsers, searchQuery),
-    [displayedUsers, searchQuery]
-  )
+    return matchedUsers.slice(start, start + PAGE_SIZE)
+  }, [matchedUsers, currentPage])
 
   const stats = useMemo(() => {
     const activeCount = users.filter((user) => user.status === 'Active').length
@@ -99,7 +94,7 @@ export function UsersPage() {
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [appliedFilters, users])
+  }, [appliedFilters, searchQuery, users])
 
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages)
@@ -360,7 +355,7 @@ export function UsersPage() {
             <IconChevronDown />
           </button>
 
-          <span>out of {filteredUsers.length}</span>
+          <span>out of {matchedUsers.length}</span>
         </div>
     
         <div className="users__pages">
