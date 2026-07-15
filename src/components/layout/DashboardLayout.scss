@@ -1,0 +1,23 @@
+@use '../../styles/variables' as *;
+
+.dashboard-layout {
+  min-height: 100vh;
+  background: $color-page-bg;
+
+  &__body {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+    padding: 40px;
+    min-height: calc(100vh - #{$header-height});
+
+    @media (max-width: 1024px) {
+      padding: 24px 16px;
+      min-height: calc(100vh - 72px);
+    }
+  }
+}

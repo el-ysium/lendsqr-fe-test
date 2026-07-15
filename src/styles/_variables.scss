@@ -1,0 +1,33 @@
+// Colors
+$color-primary: #39cdcc;
+$color-primary-text: #213f7d;
+$color-secondary-text: #545f7d;
+$color-danger: #e4033b;
+$color-success: #39cd62;
+$color-pending: #e9b200;
+$color-white: #ffffff;
+$color-page-bg: #fbfbfb;
+
+// Borders
+$border-input: 2px solid rgba(84, 95, 125, 0.15); // #545F7D @ 15%
+$border-table: 1px solid rgba(33, 63, 125, 0.1); // #213F7D @ 10%
+$border-card: 1px solid rgba(33, 63, 125, 0.06);
+
+// Status pills
+$status-inactive-bg: rgba(84, 95, 125, 0.06);
+$status-inactive-text: #545f7d;
+$status-active-bg: rgba(57, 205, 98, 0.06);
+$status-active-text: #39cd62;
+$status-blacklisted-bg: rgba(228, 3, 59, 0.1);
+$status-blacklisted-text: #e4033b;
+$status-pending-bg: rgba(233, 178, 0, 0.1);
+$status-pending-text: #e9b200;
+
+// Layout
+$sidebar-width: 283px;
+$header-height: 100px;
+$font-family: 'Work Sans', sans-serif;
+
+// Shadows
+$shadow-card: 3px 5px 20px rgba(0, 0, 0, 0.04);
+$shadow-dropdown: 3px 5px 20px rgba(0, 0, 0, 0.04);

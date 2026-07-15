@@ -1,0 +1,126 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  height: $header-height;
+  background: $color-white;
+  box-shadow: 3px 0 20px rgba(0, 0, 0, 0.04);
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr auto;
+  align-items: center;
+  padding: 0 30px 0 24px;
+  gap: 24px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr auto;
+    padding: 0 16px;
+    height: 72px;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__menu-btn {
+    display: none;
+    color: $color-primary-text;
+    padding: 4px;
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+  }
+
+  &__logo {
+    img {
+      height: 30px;
+      width: auto;
+    }
+  }
+
+  &__search {
+    display: flex;
+    align-items: stretch;
+    max-width: 400px;
+    width: 100%;
+    justify-self: center;
+
+    @media (max-width: 1024px) {
+      display: none;
+    }
+
+    input {
+      flex: 1;
+      height: 40px;
+      padding: 0 20px;
+      border: $border-input;
+      border-right: none;
+      border-radius: 8px 0 0 8px;
+      font-size: 14px;
+      color: $color-primary-text;
+      outline: none;
+
+      &::placeholder {
+        color: rgba(84, 95, 125, 0.7);
+      }
+    }
+
+    button {
+      @include flex-center;
+      width: 56px;
+      background: $color-primary;
+      border-radius: 0 8px 8px 0;
+      color: $color-white;
+    }
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+
+    @media (max-width: 640px) {
+      gap: 16px;
+    }
+  }
+
+  &__docs {
+    font-size: 14px;
+    text-decoration: underline;
+    color: $color-secondary-text;
+
+    @media (max-width: 640px) {
+      display: none;
+    }
+  }
+
+  &__bell {
+    color: $color-primary-text;
+  }
+
+  &__profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: $color-primary-text;
+    font-size: 16px;
+
+    span {
+      @media (max-width: 640px) {
+        display: none;
+      }
+    }
+  }
+
+  &__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
